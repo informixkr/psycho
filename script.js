@@ -1,4 +1,3 @@
-<script>
 // 데이터
 const tests = {
   romance: {  name: "연애 심리 테스트",
@@ -176,8 +175,7 @@ const tests = {
     `,
     C: `
       당신은 갈등을 조율하고 사람들 사이를 부드럽게 만드는 따뜻한 중재자형입니다. 
-      팀워크를 중시하며 모두가 잘 지낼 수 있도록 노력합니다. 
-      다만 자기주장이 약하다는 평가를 받을 수 있으니, 때로는 자기 뜻을 분명히 밝히는 것이 좋습니다.
+      팀워크를 중시하며 모두가 잘 지낼 수 있도록 노력하지만, 자기주장이 약하다는 평가를 받을 수 있으니, 때로는 자기 뜻을 분명히 밝히는 것이 좋습니다.
     `,
     D: `
       당신은 큰 그림을 그리며 체계적으로 팀을 이끄는 전략적인 관리자형입니다. 
@@ -457,7 +455,7 @@ const tests = {
     `
   }
 },
-  
+
   stress: { name: "스트레스 지수 테스트",
   questions: [
     {
@@ -639,4 +637,48 @@ const tests = {
       필요할 때는 앞에 나서 의견을 밝히는 것도 중요합니다.
     `
   }
+}
 };
+
+
+let current = 0;
+let score = [0, 0, 0, 0];
+let selectedTest = tests.romance; // 테스트 고정 (연애 심리 테스트)
+
+const startBtn = document.getElementById("startBtn");
+const questionBox = document.getElementById("questionBox");
+const resultBox = document.getElementById("resultBox");
+
+function showQuestion() {
+  if (current >= selectedTest.questions.length) {
+    showResult();
+    return;
+  }
+  const q = selectedTest.questions[current];
+  // 중요: 여기서 q.q와 q.a를 q.text와 q.options로 수정합니다.
+  questionBox.innerHTML = `
+    <h3>${q.text}</h3>
+    <div class="options">
+      ${q.options.map((text, idx) => `<button onclick="select(${idx})">${text}</button>`).join("")}
+    </div>
+  `;
+}
+
+window.select = function(index) {
+  score[index]++;
+  current++;
+  showQuestion();
+};
+
+function showResult() {
+  const maxIdx = score.indexOf(Math.max(...score));
+  const keys = ["A", "B", "C", "D"];
+  resultBox.innerHTML = `<h2>결과</h2><p>${selectedTest.results[keys[maxIdx]]}</p>`;
+  questionBox.style.display = "none";
+  resultBox.style.display = "block";
+}
+
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  showQuestion();
+});
