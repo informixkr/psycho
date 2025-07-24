@@ -726,9 +726,9 @@
       }
       const q = selectedTest.questions[current];
       questionBox.innerHTML = `
-        <h3>${q.q}</h3>
+        <h3>${q.text}</h3>
         <div class="options">
-          ${q.a.map((text, idx) => `<button onclick="select(${idx})">${text}</button>`).join("")}
+          ${q.options.map((text, idx) => `<button onclick="select(${idx})">${text}</button>`).join("")}
         </div>
       `;
     }
